@@ -20,22 +20,28 @@
 import threading
 import time
 
+# Criando um semáforo com uma contagem máxima de 3 threads permitidas simultaneamente
 semaforo = threading.Semaphore(3)       
+
+# Função que será executada por cada thread
 def display(name):             
-    semaforo.acquire()                 
+    semaforo.acquire()  # A thread adquire o semáforo (entra na região crítica)
+    
     for i in range(2): 
         print('Olá, ', end = '') 
         time.sleep(1) 
         print(name) 
         
-    semaforo.release()     
+    semaforo.release()  # A thread libera o semáforo (sai da região crítica)
 
 if __name__ == '__main__':            
-    jobs = []    
-    n = 15
+    jobs = []  # Lista para armazenar as threads
+    
+    n = 15  # Número de threads a serem criadas
+    
+    # Criando e iniciando as threads
     for i in range(n):     
-        t = threading.Thread(target=display,
-                             args=(f'Thread_{i}',))
+        t = threading.Thread(target=display, args=(f'Thread_{i}',))
         jobs.append(t)
         
     for j in jobs:

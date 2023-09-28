@@ -1,22 +1,34 @@
 from threading import *
 import time
   
+# Criando uma classe que herda de Thread
 class Mythread(Thread): 
   
+    # Sobrescrevendo o método run() que será executado quando a thread iniciar
     def run(self): 
+        # Este loop irá executar 10 vezes
         for i in range(10): 
-            print('Child Thread: ',i) 
+            # A cada iteração, imprime uma mensagem indicando a iteração
+            print('Child Thread: ', i) 
+            # A thread irá esperar por 2 segundos
             time.sleep(2)
+        # Quando o loop termina, imprime "Fim da thread filha"
         print('Fim da thread filha')
    
 if __name__ == "__main__":              
+    # Criando uma instância da classe Mythread
     t = Mythread() 
-    #t.setDaemon(True) 
+    # Iniciando a thread
     t.start() 
-    #t.run()
+    
+    # Este loop na thread principal irá executar 10 vezes
     for i in range(10): 
-        print('Main Thread: ',i) 
+        # A cada iteração, imprime uma mensagem indicando a iteração
+        print('Main Thread: ', i) 
+        # A thread principal irá esperar por 1 segundo
         time.sleep(1)
+    
+    # Quando o loop termina, imprime "Fim!"
     print('Fim!') 
 
 # Daemon threads são interrompidas quando a thread principal

@@ -1,44 +1,45 @@
-# Região crítica é uma região de memória compartilhada que acessa um recurso que está 
-# compartilhado e que não possa ser acessado concorrentemente por mais de uma linha de execução. 
-
-
-# Para entender melhor região crítica é bom ter em mente o que seria Condição de disputa. 
-# Esta consiste em um conjunto de recursos que deve ser compartilhado entre processos no 
-# qual, em um mesmo intervalo tempo, dois ou mais processos tentem alocar uma mesma parte 
-# de um mesmo recurso para poder utilizá-lo. Nesta hora que ocorre o problema do controle de disputa.
-
-# Uma das soluções:
-# - Exclusão Mútua (Mutex)
-# Nunca duas entidades podem estar simultaneamente em suas regiões críticas
-# Pode ser implementada com lock/unlock  
-# Em python lock.acquire() / lock.release()
-
 import threading
 import time
 
+# Variável global N
 N = 0
+
+# Criando um objeto Lock para controlar o acesso à região crítica
 lock = threading.Lock()
 
+# Função executada por cada thread
 def worker():
     global N
+    
     print(threading.currentThread().getName(), 'Starting', N)
-    lock.acquire() # Início região crítica
+    
+    # Início da região crítica (adquirindo o lock)
+    lock.acquire()
+    
     M = N
     print(M)
-    time.sleep(1)
-    N = M+1
-    lock.release()  # Fim região crítica
+    time.sleep(1)  # Simulando algum trabalho
+    
+    N = M + 1
+    
+    # Fim da região crítica (liberando o lock)
+    lock.release()
+    
     #time.sleep(1)
     print(threading.currentThread().getName(), 'Exiting', N)
 
 if __name__ == '__main__':
-    jobs = []
+    jobs = []  # Lista para armazenar as threads
+
+    # Cria e inicia 5 threads
     for i in range(5):
-        t = threading.Thread(target=worker)                 
-        jobs.append(t)
-        t.start()
-   
+        t = threading.Thread(target=worker)  # Cria uma nova thread que executará a função 'worker'
+        jobs.append(t)  # Adiciona a nova thread à lista 'jobs'
+        t.start()       # Inicia a thread
+
+    # Aguarda até que todas as threads tenham terminado
     for j in jobs:
         j.join()
-  
-    print("O valor de N é ", N)    
+
+    # Após todas as threads terminarem, imprime o valor de N
+    print("O valor de N é ", N)

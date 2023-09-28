@@ -7,23 +7,23 @@ def list_append(count, id, out_list):
         out_list.append(random.random())
 
 if __name__ == "__main__":
-    size = 1_000_000   # Quantidade de números ramdômicos que serão adicionado
-    procs = 10  # Número de processos
-    
-    jobs = []
+    size = 1_000_000   # Quantidade de números aleatórios que serão adicionados
+    procs = 10  # Número de threads a serem criadas
+
+    jobs = []  # Lista para armazenar as threads
+
     for i in range(0, procs):
-        out_list = list()
-        thread = threading.Thread(target=list_append(size, i, out_list))
+        out_list = list()  # Cria uma lista vazia para cada thread
+        thread = threading.Thread(target=list_append, args=(size, i, out_list))  # Correção: Adiciona args=(size, i, out_list)
         jobs.append(thread)
 
-    start_time = perf_counter()
-       
+    start_time = perf_counter()  # Inicia a contagem do tempo
+
     for j in jobs:
         j.start()
 
-   
     for j in jobs:
         j.join()
 
-    end_time = perf_counter()
-    print(f'Levou {end_time- start_time: 0.4f} segundos para processar.')
+    end_time = perf_counter()  # Finaliza a contagem do tempo
+    print(f'Levou {end_time - start_time:0.4f} segundos para processar.')
