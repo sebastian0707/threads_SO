@@ -4,7 +4,7 @@ import time
 # Esta é a função que cada thread irá executar
 def trabalhador(num):   
     # A thread irá esperar por 1 segundo (simulando algum trabalho)
-    time.sleep(1)
+    time.sleep(3)
     # Em seguida, imprimirá uma mensagem indicando o número do trabalhador
     print(f'Eu sou o trabalhador: {num} \n')
 
